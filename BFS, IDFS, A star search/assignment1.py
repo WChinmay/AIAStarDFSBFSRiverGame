@@ -77,6 +77,8 @@ def succ(state):
             succrightbank = initial_right
             succleftbank[0] -= 1
             succrightbank[0] += 1
+            succleftbank[2] = 0
+            succrightbank[2] = 1
             # Create state(node) and add to set of returned states
             succset.append(Node(state.val + 1, [], succleftbank, succrightbank))
         if ((left_wolf <= left_chick - 2) and (right_wolf <= right_chick + 2)): 
@@ -85,6 +87,8 @@ def succ(state):
             succrightbank = initial_right
             succleftbank[0] -= 2
             succrightbank[0] += 2
+            succleftbank[2] = 0
+            succrightbank[2] = 1
             # Create state(node) and add to set of returned states
             succset.append(Node(state.val + 1, [], succleftbank, succrightbank))
         if ((left_wolf - 1 <= left_chick) and (right_wolf + 1 <= right_chick)): 
@@ -93,6 +97,8 @@ def succ(state):
             succrightbank = initial_right
             succleftbank[1] -= 1
             succrightbank[1] += 1
+            succleftbank[2] = 0
+            succrightbank[2] = 1
             # Create state(node) and add to set of returned states
             succset.append(Node(state.val + 1, [], succleftbank, succrightbank))
         if ((left_wolf - 1 <= left_chick - 1) and (right_wolf + 1 <= right_chick + 1)):
@@ -103,6 +109,8 @@ def succ(state):
             succrightbank[0] += 1
             succleftbank[1] -= 1
             succrightbank[1] += 1
+            succleftbank[2] = 0
+            succrightbank[2] = 1
             # Create state(node) and add to set of returned states
             succset.append(Node(state.val + 1, [], succleftbank, succrightbank))
         if ((left_wolf - 2 <= left_chick) and (right_wolf + 2 <= right_chick)):
@@ -111,6 +119,8 @@ def succ(state):
             succrightbank = initial_right
             succleftbank[1] -= 2
             succrightbank[1] += 2
+            succleftbank[2] = 0
+            succrightbank[2] = 1
             # Create state(node) and add to set of returned states
             succset.append(Node(state.val + 1, [], succleftbank, succrightbank))
     elif (right_boat == 1):
@@ -120,6 +130,8 @@ def succ(state):
             succleftbank = initial_left
             succrightbank[0] -= 1
             succleftbank[0] += 1
+            succleftbank[2] = 1
+            succrightbank[2] = 0
             # Create state(node) and add to set of returned states
             succset.append(Node(state.val + 1, [], succleftbank, succrightbank))
         if ((right_wolf <= right_chick - 2) and (left_wolf <= left_chick + 2)): 
@@ -128,6 +140,8 @@ def succ(state):
             succleftbank = initial_left
             succrightbank[0] -= 2
             succleftbank[0] += 2
+            succleftbank[2] = 1
+            succrightbank[2] = 0
             # Create state(node) and add to set of returned states
             succset.append(Node(state.val + 1, [], succleftbank, succrightbank))
         if ((right_wolf - 1 <= right_chick) and (left_wolf + 1 <= left_chick)): 
@@ -136,6 +150,8 @@ def succ(state):
             succleftbank = initial_left
             succrightbank[1] -= 1
             succleftbank[1] += 1
+            succleftbank[2] = 1
+            succrightbank[2] = 0
             # Create state(node) and add to set of returned states
             succset.append(Node(state.val + 1, [], succleftbank, succrightbank))
         if ((right_wolf - 1 <= right_chick - 1) and (left_wolf + 1 <= left_chick + 1)):
@@ -146,6 +162,8 @@ def succ(state):
             succleftbank[0] += 1
             succrightbank[1] -= 1
             succleftbank[1] += 1
+            succleftbank[2] = 1
+            succrightbank[2] = 0
             # Create state(node) and add to set of returned states
             succset.append(Node(state.val + 1, [], succleftbank, succrightbank))
         if ((right_wolf - 2 <= right_chick) and (left_wolf + 2 <= left_chick)):
@@ -154,6 +172,8 @@ def succ(state):
             succleftbank = initial_left
             succrightbank[1] -= 2
             succleftbank[1] += 2
+            succleftbank[2] = 1
+            succrightbank[2] = 0
             # Create state(node) and add to set of returned states
             succset.append(Node(state.val + 1, [], succleftbank, succrightbank))
     return succset
