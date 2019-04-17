@@ -179,7 +179,21 @@ def succ(state):
     return succset
 
 
-def bfs_graph_search (problem, fringe):
+def bfs_graph_search (state, goal):
     closed = []
-    fringe = []     # Is kinda like the fifo queue
-    
+    fringe = queue.Queue()     # Is kinda like the fifo queue
+    fringe.put(state)
+    visited = []
+    while fringe:
+        cur = fringe.get()
+        if (fringe.leftbank == goal.leftbank and fringe.rightbank == goal.rightbank):
+            return cur          # make sure node depth is computed in val
+        visited.append(cur)
+        if (fringe.qsize() == 0):
+            temp = succ(cur)
+            for _node in temp:
+                fringe.put(_node)
+                cur.child.append(_node)
+
+def dfs_graph_search (state,problem, goal):
+    closed = []        
