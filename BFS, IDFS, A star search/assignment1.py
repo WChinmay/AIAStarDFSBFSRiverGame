@@ -1,5 +1,7 @@
 import pdb
 import sys
+from dataclasses import dataclass, field
+from typing import Any
 import queue
 
 # Graph Definition
@@ -47,16 +49,13 @@ rightgoal.append(x[0])
 rightgoal.append(x[2])
 rightgoal.append(x[4])
 
-inp = make_graph(leftstart, rightstart)
-exp_out = make_graph(leftstart, rightstart)
-
 def make_graph(left_bank, right_bank):
     return (Graph(0, [], left_bank, right_bank))
 
 
+
 # input  = Graph(3,[Node(5,[Node(3)])])       # Syntax similar to functional programming
 # alternatively can use a dict mapping for denoting relationships on a graph
-pdb.set_trace()
 
 def succ(state):
     initial_left = state.leftbank
@@ -198,11 +197,20 @@ def bfs_graph_search (state, goal):
             return cur, numNodesExpanded                          
         if cur not in visited:              # Using hash set
             visited.add(cur)                # Adding to visited (modify to use unique key instead of depth or use hashset)
+            print(len(cur.child))
             temp = succ(cur)                # Expanding
+            print(len(cur.child),"kdvgnklsndl")
             numNodesExpanded += 1
+            # pdb.set_trace()
+            print("hello")
             for _node in temp:
                 fringe.put(_node)           # Add states to fringe
                 cur.child.append(_node)     # Add children to cur node in graph
+                print(len(cur.child))
+            print("if loop")
+        print(cur.val)
+        print("outside")
+        pdb.set_trace() 
 
 def dfs_graph_search (state, goal):
     closed = []
@@ -221,3 +229,14 @@ def dfs_graph_search (state, goal):
             for _node in temp:
                 fringe.put(_node)           # Add states to fringe
                 cur.child.append(_node)     # Add children to cur node in graph
+
+
+
+
+
+inp = make_graph(leftstart, rightstart)
+exp_out = make_graph(rightstart, leftstart)
+
+pdb.set_trace()
+
+print("")
