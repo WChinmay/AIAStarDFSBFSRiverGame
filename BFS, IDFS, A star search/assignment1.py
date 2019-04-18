@@ -1,7 +1,5 @@
 import pdb
 import sys
-from dataclasses import dataclass, field
-from typing import Any
 import queue
 
 # Graph Definition
@@ -74,7 +72,7 @@ def succ(state):
 
     # Temp array for set of successor states
     succset = []
-
+    pdb.set_trace()
     # Where is the boat?
     if (left_boat == 1):
         if ((left_wolf <= left_chick - 1) and (right_wolf <= right_chick + 1)):     # Checking constraint
@@ -237,6 +235,7 @@ def dfs_graph_search (state, goal):
 inp = make_graph(leftstart, rightstart)
 exp_out = make_graph(rightstart, leftstart)
 
+bfs_graph_search(inp.state,exp_out.state)
 pdb.set_trace()
 
 print("")
