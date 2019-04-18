@@ -184,14 +184,14 @@ def bfs_graph_search (state, goal):
     closed = []
     fringe = queue.Queue()     # Is kinda like the fifo queue (Queue)
     fringe.put(state)          # Enqueue state
-    visited = {}               # Creating dictionary(hash map) for visited nodes
+    visited = set()            # Creating dictionary(hash map) for visited nodes
     numNodesExpanded = 0
     while fringe:
         cur = fringe.get()
         if (cur.leftbank == goal.leftbank and cur.rightbank == goal.rightbank):
             return cur, numNodesExpanded                          
         if cur not in visited:              # Using hash set
-            visited[cur.val] = cur          # Adding to visited (modify to use unique key instead of depth or use hashset)
+            visited.add(cur)                # Adding to visited (modify to use unique key instead of depth or use hashset)
             temp = succ(cur)                # Expanding
             numNodesExpanded += 1
             for _node in temp:
@@ -202,14 +202,14 @@ def dfs_graph_search (state, goal):
     closed = []
     fringe = queue.LifoQueue()     # A LiFo queue in Python (Stack)
     fringe.put(state)          # Enqueue state
-    visited = {}               # Creating dictionary(hash map) for visited nodes
+    visited = set()            # Creating dictionary(hash map) for visited nodes
     numNodesExpanded = 0
     while fringe:
         cur = fringe.get()
         if (cur.leftbank == goal.leftbank and cur.rightbank == goal.rightbank):
             return cur, numNodesExpanded                          
         if cur not in visited:              # Using hash set
-            visited[cur.val] = cur          # Adding to visited (modify to use unique key instead of depth or use hashset)
+            visited.add(cur)                # Adding to visited (modify to use unique key instead of depth or use hashset)
             temp = succ(cur)                # Expanding
             numNodesExpanded += 1
             for _node in temp:
