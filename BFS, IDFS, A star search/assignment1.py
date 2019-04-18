@@ -193,8 +193,8 @@ def bfs_graph_search (state, goal):
         cur = fringe.get()
         if (cur.leftbank == goal.leftbank and cur.rightbank == goal.rightbank):
             return cur, numNodesExpanded                          
-        if (cur.left_bank, cur.right_bank) not in visited:              # Using hash set
-            visited.add(cur.left_bank, cur.right_bank)                # Adding to visited (modify to use unique key instead of depth or use hashset)
+        if (str(cur.leftbank + cur.rightbank)) not in visited:              # Using hash set
+            visited.add(str(cur.leftbank + cur.rightbank))                # Adding to visited (modify to use unique key instead of depth or use hashset)
  #           print(len(cur.child))
             temp = succ(cur)                # Expanding
 #            print(len(cur.child),"kdvgnklsndl")
