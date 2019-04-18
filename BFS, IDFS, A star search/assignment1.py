@@ -11,8 +11,8 @@ class Node:
         self.rightbank = rightbank    # C, W, B
 
 class Graph:
-    def __init__(self, val, children):
-        self.state = Node(val, children)
+    def __init__(self, val, children, leftbank = [], rightbank = []):
+        self.state = Node(val, children, leftbank, rightbank)
         
 
     def add_successor_nodes(self,nodes):
@@ -47,8 +47,14 @@ rightgoal.append(x[0])
 rightgoal.append(x[2])
 rightgoal.append(x[4])
 
+inp = make_graph(leftstart, rightstart)
+exp_out = make_graph(leftstart, rightstart)
 
-# x  = Graph(3,[Node(5,[Node(3)])])       # Syntax similar to functional programming
+def make_graph(left_bank, right_bank):
+    return (Graph(0, [], left_bank, right_bank))
+
+
+# input  = Graph(3,[Node(5,[Node(3)])])       # Syntax similar to functional programming
 # alternatively can use a dict mapping for denoting relationships on a graph
 pdb.set_trace()
 
