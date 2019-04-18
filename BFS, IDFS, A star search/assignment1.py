@@ -24,29 +24,17 @@ class Graph:
 sys.argv = [sys.argv[0], 'start1.txt']
 start_file = open(sys.argv[1], "r")
 x = start_file.readline()
-leftstart = []
-leftstart.append(int(x[0]))
-leftstart.append(int(x[2]))
-leftstart.append(int(x[4]))
+leftstart = [int(i.strip()) for i in x.split(',')]
 x = start_file.readline()
-rightstart = []
-rightstart.append(int(x[0]))
-rightstart.append(int(x[2]))
-rightstart.append(int(x[4]))
+rightstart = [int(i.strip()) for i in x.split(',')]
 
 # Reading Files for Goal State
 sys.argv = [sys.argv[0], 'goal1.txt']
 goal_file = open(sys.argv[1], "r")
 x = goal_file.readline()
-leftgoal = []
-leftgoal.append(int(x[0]))
-leftgoal.append(int(x[2]))
-leftgoal.append(int(x[4]))
+leftgoal = [int(i.strip()) for i in x.split(',')]
 x = goal_file.readline()
-rightgoal = []  
-rightgoal.append(int(x[0]))
-rightgoal.append(int(x[2]))
-rightgoal.append(int(x[4]))
+rightgoal = [int(i.strip()) for i in x.split(',')] 
 
 def make_graph(left_bank, right_bank):
     return (Graph(0, [], left_bank, right_bank))
@@ -299,8 +287,10 @@ def bfs_graph_search (state, goal):
         print(cur.rightbank)
 
 def dfs_graph_search (state, goal):
+    max_chick = state.rightbank[0]
+    max_wolf = state.rightbank[1]
     closed = []
-    fringe = queue.LifoQueue()     # A LiFo queue in Python (Stack)
+    fringe = queue.LifoQueue()     # A LiFo queue (stack)
     fringe.put(state)          # Enqueue state
     visited = set()            # Creating dictionary(hash map) for visited nodes
     numNodesExpanded = 0
@@ -308,13 +298,17 @@ def dfs_graph_search (state, goal):
         cur = fringe.get()
         if (cur.leftbank == goal.leftbank and cur.rightbank == goal.rightbank):
             return cur, numNodesExpanded                          
-        if cur not in visited:              # Using hash set
-            visited.add(cur)                # Adding to visited (modify to use unique key instead of depth or use hashset)
-            temp = succ(cur)                # Expanding
+        if (str(cur.leftbank + cur.rightbank)) not in visited:              # Using hash set
+            visited.add(str(cur.leftbank + cur.rightbank))                # Adding to visited (modify to use unique key instead of depth or use hashset)
+            temp = succ(cur, max_chick, max_wolf)                # Expanding
             numNodesExpanded += 1
+            # pdb.set_trace()
+            print("hello")
             for _node in temp:
                 fringe.put(_node)           # Add states to fringe
                 cur.child.append(_node)     # Add children to cur node in graph
+        print(cur.leftbank)
+        print(cur.rightbank)
 
 
 
@@ -323,5 +317,9 @@ def dfs_graph_search (state, goal):
 inp = make_graph(leftstart, rightstart)
 exp_out = make_graph(rightstart, leftstart)
 
-print(bfs_graph_search(inp.state,exp_out.state))
+x,y = dfs_graph_search(inp.state,exp_out.state)
+print("Result:")
+print(x.leftbank)
+print(x.rightbank)
+print(y)
 # pdb.set_trace()
