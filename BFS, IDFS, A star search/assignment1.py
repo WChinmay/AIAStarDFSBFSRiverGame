@@ -1,5 +1,6 @@
 import pdb
 import sys
+import queue
 
 # Graph Definition
 class Node:
@@ -181,19 +182,36 @@ def succ(state):
 
 def bfs_graph_search (state, goal):
     closed = []
-    fringe = queue.Queue()     # Is kinda like the fifo queue
-    fringe.put(state)
-    visited = []
+    fringe = queue.Queue()     # Is kinda like the fifo queue (Queue)
+    fringe.put(state)          # Enqueue state
+    visited = {}               # Creating dictionary(hash map) for visited nodes
+    numNodesExpanded = 0
     while fringe:
         cur = fringe.get()
-        if (fringe.leftbank == goal.leftbank and fringe.rightbank == goal.rightbank):
-            return cur          # make sure node depth is computed in val
-        visited.append(cur)
-        if (fringe.qsize() == 0):
-            temp = succ(cur)
+        if (cur.leftbank == goal.leftbank and cur.rightbank == goal.rightbank):
+            return cur, numNodesExpanded                          
+        if cur not in visited:              # Using hash set
+            visited[cur.val] = cur          # Adding to visited (modify to use unique key instead of depth or use hashset)
+            temp = succ(cur)                # Expanding
+            numNodesExpanded += 1
             for _node in temp:
-                fringe.put(_node)
-                cur.child.append(_node)
+                fringe.put(_node)           # Add states to fringe
+                cur.child.append(_node)     # Add children to cur node in graph
 
-def dfs_graph_search (state,problem, goal):
-    closed = []        
+def dfs_graph_search (state, goal):
+    closed = []
+    fringe = queue.LifoQueue()     # A LiFo queue in Python (Stack)
+    fringe.put(state)          # Enqueue state
+    visited = {}               # Creating dictionary(hash map) for visited nodes
+    numNodesExpanded = 0
+    while fringe:
+        cur = fringe.get()
+        if (cur.leftbank == goal.leftbank and cur.rightbank == goal.rightbank):
+            return cur, numNodesExpanded                          
+        if cur not in visited:              # Using hash set
+            visited[cur.val] = cur          # Adding to visited (modify to use unique key instead of depth or use hashset)
+            temp = succ(cur)                # Expanding
+            numNodesExpanded += 1
+            for _node in temp:
+                fringe.put(_node)           # Add states to fringe
+                cur.child.append(_node)     # Add children to cur node in graph
