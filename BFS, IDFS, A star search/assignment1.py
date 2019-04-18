@@ -38,14 +38,14 @@ sys.argv = [sys.argv[0], 'goal1.txt']
 goal_file = open(sys.argv[1], "r")
 x = goal_file.readline()
 leftgoal = []
-leftgoal.append(x[0])
-leftgoal.append(x[2])
-leftgoal.append(x[4])
+leftgoal.append(int(x[0]))
+leftgoal.append(int(x[2]))
+leftgoal.append(int(x[4]))
 x = goal_file.readline()
 rightgoal = []  
-rightgoal.append(x[0])
-rightgoal.append(x[2])
-rightgoal.append(x[4])
+rightgoal.append(int(x[0]))
+rightgoal.append(int(x[2]))
+rightgoal.append(int(x[4]))
 
 def make_graph(left_bank, right_bank):
     return (Graph(0, [], left_bank, right_bank))
