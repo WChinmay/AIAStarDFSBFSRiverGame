@@ -24,14 +24,14 @@ sys.argv = [sys.argv[0], 'start1.txt']
 start_file = open(sys.argv[1], "r")
 x = start_file.readline()
 leftstart = []
-leftstart.append(x[0])
-leftstart.append(x[2])
-leftstart.append(x[4])
+leftstart.append(int(x[0]))
+leftstart.append(int(x[2]))
+leftstart.append(int(x[4]))
 x = start_file.readline()
 rightstart = []
-rightstart.append(x[0])
-rightstart.append(x[2])
-rightstart.append(x[4])
+rightstart.append(int(x[0]))
+rightstart.append(int(x[2]))
+rightstart.append(int(x[4]))
 
 # Reading Files for Goal State
 sys.argv = [sys.argv[0], 'goal1.txt']
