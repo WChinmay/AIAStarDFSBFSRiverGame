@@ -195,20 +195,20 @@ def bfs_graph_search (state, goal):
             return cur, numNodesExpanded                          
         if cur not in visited:              # Using hash set
             visited.add(cur)                # Adding to visited (modify to use unique key instead of depth or use hashset)
-            print(len(cur.child))
+ #           print(len(cur.child))
             temp = succ(cur)                # Expanding
-            print(len(cur.child),"kdvgnklsndl")
+#            print(len(cur.child),"kdvgnklsndl")
             numNodesExpanded += 1
             # pdb.set_trace()
             print("hello")
             for _node in temp:
                 fringe.put(_node)           # Add states to fringe
                 cur.child.append(_node)     # Add children to cur node in graph
-                print(len(cur.child))
-            print("if loop")
-        print(cur.val)
-        print("outside")
-        pdb.set_trace() 
+  #              print(len(cur.child))
+   #         print("if loop")
+        print(cur.leftbank)
+        print(cur.rightbank)
+    #    print("outside")
 
 def dfs_graph_search (state, goal):
     closed = []
