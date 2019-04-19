@@ -318,7 +318,6 @@ def iddfs_graph_search(state, goal):
     for depth in itertools.count():
         result = dls(state, goal, numNodesExpanded, depth, max_chick, max_wolf)
         if result != "notFound":
-            # pdb.set_trace()
             return result, numNodesExpanded
 
 def dls(state, goal, numNodesExpanded, depth, max_chick, max_wolf):
@@ -326,7 +325,7 @@ def dls(state, goal, numNodesExpanded, depth, max_chick, max_wolf):
 
 def recursive_dls(state, goal, numNodesExpanded, depth, max_chick, max_wolf):
     if (state.leftbank == goal.leftbank and state.rightbank == goal.rightbank):
-        return state
+        return state, numNodesExpanded
     elif depth == 0:
         return "notFound"
     else:
