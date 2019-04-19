@@ -2,6 +2,7 @@ import pdb
 import sys
 import queue
 import copy
+import itertools
 
 # Graph Definition
 class Node:
@@ -279,7 +280,7 @@ def bfs_graph_search (state, goal):
             temp = succ(cur, max_chick, max_wolf)                # Expanding
             numNodesExpanded += 1
             # pdb.set_trace()
-            print("hello")
+            # print("hello")
             for _node in temp:
                 fringe.put(_node)           # Add states to fringe
                 cur.child.append(_node)     # Add children to cur node in graph
@@ -303,15 +304,51 @@ def dfs_graph_search (state, goal):
             temp = succ(cur, max_chick, max_wolf)                # Expanding
             numNodesExpanded += 1
             # pdb.set_trace()
-            print("hello")
+            # print("hello")
             for _node in temp:
                 fringe.put(_node)           # Add states to fringe
                 cur.child.append(_node)     # Add children to cur node in graph
         print(cur.leftbank)
         print(cur.rightbank)
 
+def iddfs_graph_search(state, goal):
+    numNodesExpanded = 0
+    max_chick = state.rightbank[0]
+    max_wolf = state.rightbank[1]
+    for depth in itertools.count():
+        result = dls(state, goal, numNodesExpanded, depth, max_chick, max_wolf)
+        if result != "notFound":
+            return result, numNodesExpanded
+
+def dls(state, goal, numNodesExpanded, depth, max_chick, max_wolf):
+    return recursive_dls(state, goal, numNodesExpanded, depth, max_chick, max_wolf)
+
+def recursive_dls(state, goal, numNodesExpanded, depth, max_chick, max_wolf):
+    if (state.leftbank == goal.leftbank and state.rightbank == goal.rightbank):
+        return state, numNodesExpanded
+    elif depth == 0:
+        return "notFound"
+    else:
+        cutoff_occurred = False
+        temp = succ(state, max_chick, max_wolf)
+        numNodesExpanded += 1 
+        for successor in temp:
+            result = recursive_dls(successor, goal, numNodesExpanded, depth - 1, max_chick, max_wolf)
+            if result == "notFound":
+                cutoff_occurred = True
+            elif result:
+                return result, numNodesExpanded
+        if cutoff_occurred:
+            return "notFound"
+        else:
+            return False
+            
+        
 
 
+
+def a_star_search():
+    
 
 
 inp = make_graph(leftstart, rightstart)
