@@ -42,8 +42,8 @@ def main():
     rightgoal = [int(i.strip()) for i in x.split(',')] 
 
     mode = sys.argv[3]
-    outputfile = sys.argv[4]
-    f = open(outputfile, "w")
+    file_name = sys.argv[4]
+    outputfile = open(file_name, "w")
 
     inp = make_graph(leftstart, rightstart)
     exp_out = make_graph(leftgoal, rightgoal)
@@ -65,16 +65,15 @@ def main():
         print("Solution has ", x[0].val, " paths")
         print_path(x[0], outputfile)
     elif mode == "astar":
-        result = a_star_search(inp.state,exp_out.state)
+        result, numNodesExpanded = a_star_search(inp.state,exp_out.state)
         print("Number of nodes expanded is: ", numNodesExpanded)
         print("Solution has ", result.val, " paths")
         print_path(result, outputfile)
 
     # x = iddfs_graph_search(inp.state,exp_out.state)
     # print_path(x, outputfile)
-    print("Result:")
     # xx = flatten(x)
-    pdb.set_trace()
+    # pdb.set_trace()
     # print(x.leftbank)
     # print(x.rightbank)
     # print(y)
@@ -82,8 +81,6 @@ def main():
 
 def make_graph(left_bank, right_bank):
     return (Graph(0, [], left_bank, right_bank))
-
-
 
 # input  = Graph(3,[Node(5,[Node(3)])])       # Syntax similar to functional programming
 # alternatively can use a dict mapping for denoting relationships on a graph
@@ -327,11 +324,9 @@ def bfs_graph_search (state, goal):
             for _node in temp:
                 fringe.put(_node)           # Add states to fringe
                 cur.child.append(_node)     # Add children to cur node in graph
-        print(cur.leftbank)
-        print(cur.rightbank)
 
 def dfs_graph_search (state, goal):
-    max_chick = satate.rightbank[0]
+    max_chick = state.rightbank[0]
     max_wolf = state.rightbank[1]
     closed = []
     fringe = queue.LifoQueue()     # A LiFo queue (stack)
@@ -351,8 +346,6 @@ def dfs_graph_search (state, goal):
             for _node in temp:
                 fringe.put(_node)           # Add states to fringe
                 cur.child.append(_node)     # Add children to cur node in graph
-        print(cur.leftbank)
-        print(cur.rightbank)
 
 def iddfs_graph_search(state, goal):
     numNodesExpanded = 0
@@ -446,9 +439,11 @@ def a_star_search(state, goal):
 
 def print_path (node, outputfile):
     if (node.parent == None):
-        outputfile.write(node.leftbank,node.rightbank, end=" ")
+        outputfile.write(str(node.leftbank) + " " + str(node.rightbank) + ", ")
+        print(node.leftbank, node.rightbank, end = ", ")
     else:
-        print_path(node.parent)
-        outputfile.write(node.leftbank,node.rightbank, end=" ")
-
+        print_path(node.parent,outputfile)
+        outputfile.write(str(node.leftbank) + " " + str(node.rightbank) + ", ")
+        print(node.leftbank, node.rightbank, end = ", ")
+ 
 main()
