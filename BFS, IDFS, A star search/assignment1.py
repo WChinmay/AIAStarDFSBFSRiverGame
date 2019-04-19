@@ -67,7 +67,7 @@ def main():
     elif mode == "astar":
         result, numNodesExpanded = a_star_search(inp.state,exp_out.state)
         print("Number of nodes expanded is: ", numNodesExpanded)
-        print("Solution has ", result.val, " paths")
+        print("Solution has ", result.val, " steps")
         print_path(result, outputfile)
 
     # x = iddfs_graph_search(inp.state,exp_out.state)
@@ -400,11 +400,12 @@ def flatten(sequence: tuple) -> tuple:
     return result   
 
 def heuristic(node):
-    if (node.rightbank[2] == 1):
-        return 0.25
+    if (node.leftbank[0] + node.leftbank[1] > node.rightbank[0] + node.rightbank[1]):
+        return 0.75
 
     else:
         return 0.25
+
 
 def a_star_search(state, goal):
     max_chick = state.rightbank[0]
