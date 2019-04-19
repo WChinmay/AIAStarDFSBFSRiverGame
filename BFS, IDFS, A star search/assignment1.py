@@ -26,21 +26,59 @@ class Graph:
         for node in nodes:
             self.state.child.append(Node(node))
 
-# Reading Files for Start State
-sys.argv = [sys.argv[0], 'start2.txt']
-start_file = open(sys.argv[1], "r")
-x = start_file.readline()
-leftstart = [int(i.strip()) for i in x.split(',')]
-x = start_file.readline()
-rightstart = [int(i.strip()) for i in x.split(',')]
+def main():
+    # Reading Files for Start State
+    start_file = open(sys.argv[1], "r")
+    x = start_file.readline()
+    leftstart = [int(i.strip()) for i in x.split(',')]
+    x = start_file.readline()
+    rightstart = [int(i.strip()) for i in x.split(',')]
 
-# Reading Files for Goal State
-sys.argv = [sys.argv[0], 'goal2.txt']
-goal_file = open(sys.argv[1], "r")
-x = goal_file.readline()
-leftgoal = [int(i.strip()) for i in x.split(',')]
-x = goal_file.readline()
-rightgoal = [int(i.strip()) for i in x.split(',')] 
+    # Reading Files for Goal State
+    goal_file = open(sys.argv[2], "r")
+    x = goal_file.readline()
+    leftgoal = [int(i.strip()) for i in x.split(',')]
+    x = goal_file.readline()
+    rightgoal = [int(i.strip()) for i in x.split(',')] 
+
+    mode = sys.argv[3]
+    outputfile = sys.argv[4]
+    f = open(outputfile, "w")
+
+    inp = make_graph(leftstart, rightstart)
+    exp_out = make_graph(leftgoal, rightgoal)
+
+    if mode == "bfs":
+        result, numNodesExpanded = bfs_graph_search(inp.state,exp_out.state)
+        print("Number of nodes expanded is: ", numNodesExpanded)
+        print("Solution has ", result.val, " paths")
+        print_path(result, outputfile)
+    elif mode == "dfs":
+        result, numNodesExpanded = dfs_graph_search(inp.state,exp_out.state)
+        print("Number of nodes expanded is: ", numNodesExpanded)
+        print("Solution has ", result.val, " paths")
+        print_path(result, outputfile)
+    elif mode == "iddfs":
+        x = iddfs_graph_search(inp.state,exp_out.state)
+        x = flatten(x)
+        print("Number of nodes expanded is: ", x[1])
+        print("Solution has ", x[0].val, " paths")
+        print_path(x[0], outputfile)
+    elif mode == "astar":
+        result = a_star_search(inp.state,exp_out.state)
+        print("Number of nodes expanded is: ", numNodesExpanded)
+        print("Solution has ", result.val, " paths")
+        print_path(result, outputfile)
+
+    # x = iddfs_graph_search(inp.state,exp_out.state)
+    # print_path(x, outputfile)
+    print("Result:")
+    # xx = flatten(x)
+    pdb.set_trace()
+    # print(x.leftbank)
+    # print(x.rightbank)
+    # print(y)
+    # pdb.set_trace()
 
 def make_graph(left_bank, right_bank):
     return (Graph(0, [], left_bank, right_bank))
@@ -293,7 +331,7 @@ def bfs_graph_search (state, goal):
         print(cur.rightbank)
 
 def dfs_graph_search (state, goal):
-    max_chick = state.rightbank[0]
+    max_chick = satate.rightbank[0]
     max_wolf = state.rightbank[1]
     closed = []
     fringe = queue.LifoQueue()     # A LiFo queue (stack)
@@ -404,25 +442,13 @@ def a_star_search(state, goal):
                 fringe.put((_node.priority, _node))
         
 
-def print_path (node):
+
+
+def print_path (node, outputfile):
     if (node.parent == None):
-        print(node.leftbank,node.rightbank, end=" ")
+        outputfile.write(node.leftbank,node.rightbank, end=" ")
     else:
         print_path(node.parent)
-        print(node.leftbank,node.rightbank, end=" ")
+        outputfile.write(node.leftbank,node.rightbank, end=" ")
 
-
-inp = make_graph(leftstart, rightstart)
-exp_out = make_graph(rightstart, leftstart)
-
-x = a_star_search(inp.state,exp_out.state)
-
-
-x = iddfs_graph_search(inp.state,exp_out.state)
-print("Result:")
-# xx = flatten(x)
-pdb.set_trace()
-# print(x.leftbank)
-# print(x.rightbank)
-# print(y)
-# pdb.set_trace()
+main()
