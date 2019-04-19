@@ -6,12 +6,13 @@ import itertools
 
 # Graph Definition
 class Node:
-    def __init__(self,val, child = [], leftbank = [], rightbank = [], priority = 0):     # Node("",[Node(4),Node(5)])
+    def __init__(self,val, child = [], leftbank = [], rightbank = [], priority = 0, parent = None):     # Node("",[Node(4),Node(5)])
         self.val = val
         self.child = child
         self.leftbank = leftbank      # C, W, B
         self.rightbank = rightbank    # C, W, B
         self.priority = priority
+        self.parent = parent
     
     def __lt__(self, other):
         return (self.priority > other.priority)
@@ -87,7 +88,7 @@ def succ(state, max_chick, max_wolf):
                 flag = 0
             if(flag == 1):
                 # Create state(node) and add to set of returned states
-                succset.append(Node(state.val + 1, [], succleftbank, succrightbank))
+                succset.append(Node(state.val + 1, [], succleftbank, succrightbank, 0, state))
         if ((left_wolf <= left_chick - 2 or left_wolf == 0 or left_chick - 2 == 0) and (right_wolf <= right_chick + 2 or right_wolf == 0 or right_chick + 2 == 0)): 
             # Put two chickens in the boat
             succleftbank = copy.deepcopy(initial_left)
@@ -106,7 +107,7 @@ def succ(state, max_chick, max_wolf):
                 flag = 0
             if(flag == 1):
                 # Create state(node) and add to set of returned states
-                succset.append(Node(state.val + 1, [], succleftbank, succrightbank))
+                succset.append(Node(state.val + 1, [], succleftbank, succrightbank, 0, state))
         if ((left_wolf - 1 <= left_chick or left_wolf - 1 == 0 or left_chick == 0) and (right_wolf + 1 <= right_chick or right_wolf + 1 == 0 or right_chick == 0)): 
             # Put one wolf in the boat
             succleftbank = copy.deepcopy(initial_left)
@@ -125,7 +126,7 @@ def succ(state, max_chick, max_wolf):
                 flag = 0
             if(flag == 1):
                 # Create state(node) and add to set of returned states
-                succset.append(Node(state.val + 1, [], succleftbank, succrightbank))
+                succset.append(Node(state.val + 1, [], succleftbank, succrightbank, 0, state))
         if ((left_wolf - 1 <= left_chick - 1 or left_wolf - 1 == 0 or left_chick - 1 == 0) and (right_wolf + 1 <= right_chick + 1 or right_wolf + 1 == 0 or right_chick + 1 == 0)):
             # Put one wolf and one chicken in the boat
             succleftbank = copy.deepcopy(initial_left)
@@ -146,7 +147,7 @@ def succ(state, max_chick, max_wolf):
                 flag = 0
             if(flag == 1):
                 # Create state(node) and add to set of returned states
-                succset.append(Node(state.val + 1, [], succleftbank, succrightbank))
+                succset.append(Node(state.val + 1, [], succleftbank, succrightbank, 0, state))
         if ((left_wolf - 2 <= left_chick or left_wolf - 2 == 0 or left_chick == 0) and (right_wolf + 2 <= right_chick or right_wolf + 2 == 0 or right_chick == 0)):
             # Put two wolves in the boat
             succleftbank = copy.deepcopy(initial_left)
@@ -165,7 +166,7 @@ def succ(state, max_chick, max_wolf):
                 flag = 0
             if(flag == 1):
                 # Create state(node) and add to set of returned states
-                succset.append(Node(state.val + 1, [], succleftbank, succrightbank))
+                succset.append(Node(state.val + 1, [], succleftbank, succrightbank, 0, state))
     elif (right_boat == 1):
         if ((right_wolf <= right_chick - 1 or right_wolf == 0 or right_chick - 1 == 0) and (left_wolf <= left_chick + 1 or left_wolf == 0 or left_chick + 1 == 0)):     # Checking constraint
             # Put one chicken in the boat
@@ -185,7 +186,7 @@ def succ(state, max_chick, max_wolf):
                 flag = 0
             if(flag == 1):
                 # Create state(node) and add to set of returned states
-                succset.append(Node(state.val + 1, [], succleftbank, succrightbank))
+                succset.append(Node(state.val + 1, [], succleftbank, succrightbank, 0, state))
         if ((right_wolf <= right_chick - 2 or right_wolf == 0 or right_chick - 2 == 0) and (left_wolf <= left_chick + 2 or left_wolf == 0 or left_chick + 2 == 0)): 
             # Put two chickens in the boat
             succleftbank = copy.deepcopy(initial_left)
@@ -204,7 +205,7 @@ def succ(state, max_chick, max_wolf):
                 flag = 0
             if(flag == 1):
                 # Create state(node) and add to set of returned states
-                succset.append(Node(state.val + 1, [], succleftbank, succrightbank))
+                succset.append(Node(state.val + 1, [], succleftbank, succrightbank, 0, state))
         if ((right_wolf - 1 <= right_chick or right_wolf - 1 == 0 or right_chick == 0) and (left_wolf + 1 <= left_chick or left_wolf + 1 == 0 or left_chick == 0)): 
             # Put one wolf in the boat
             succleftbank = copy.deepcopy(initial_left)
@@ -223,7 +224,7 @@ def succ(state, max_chick, max_wolf):
                 flag = 0
             if(flag == 1):
                 # Create state(node) and add to set of returned states
-                succset.append(Node(state.val + 1, [], succleftbank, succrightbank))
+                succset.append(Node(state.val + 1, [], succleftbank, succrightbank, 0, state))
         if ((right_wolf - 1 <= right_chick - 1 or right_wolf - 1 == 0 or right_chick - 1 == 0) and (left_wolf + 1 <= left_chick + 1 or left_wolf + 1 == 0 or left_chick + 1 == 0)):
             # Put one wolf and one chicken in the boat
             succleftbank = copy.deepcopy(initial_left)
@@ -244,7 +245,7 @@ def succ(state, max_chick, max_wolf):
                 flag = 0
             if(flag == 1):
                 # Create state(node) and add to set of returned states
-                succset.append(Node(state.val + 1, [], succleftbank, succrightbank))
+                succset.append(Node(state.val + 1, [], succleftbank, succrightbank, 0, state))
         if ((right_wolf - 2 <= right_chick or right_wolf - 2 == 0 or right_chick == 0) and (left_wolf + 2 <= left_chick or left_wolf + 2 == 0 or left_chick == 0)):
             # Put two wolves in the boat
             succleftbank = copy.deepcopy(initial_left)
@@ -263,7 +264,7 @@ def succ(state, max_chick, max_wolf):
                 flag = 0
             if(flag == 1):
                 # Create state(node) and add to set of returned states
-                succset.append(Node(state.val + 1, [], succleftbank, succrightbank))
+                succset.append(Node(state.val + 1, [], succleftbank, succrightbank, 0, state))
     return succset
 
 
@@ -346,7 +347,6 @@ def recursive_dls(state, goal, numNodesExpanded, depth, max_chick, max_wolf, vis
                 if result == "notFound":
                     cutoff_occurred = True
                 elif result:
-                    # pdb.set_trace()
                     return result, numNodesExpanded
             if cutoff_occurred:
                 return "notFound"
@@ -403,6 +403,13 @@ def a_star_search(state, goal):
                 _node.priority = (_node.val + heuristic(_node))
                 fringe.put((_node.priority, _node))
         
+
+def print_path (node):
+    if (node.parent == None):
+        print(node.leftbank,node.rightbank, end=" ")
+    else:
+        print_path(node.parent)
+        print(node.leftbank,node.rightbank, end=" ")
 
 
 inp = make_graph(leftstart, rightstart)
