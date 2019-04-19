@@ -6,11 +6,15 @@ import itertools
 
 # Graph Definition
 class Node:
-    def __init__(self,val, child = [], leftbank = [], rightbank = []):     # Node("",[Node(4),Node(5)])
+    def __init__(self,val, child = [], leftbank = [], rightbank = [], priority = 0):     # Node("",[Node(4),Node(5)])
         self.val = val
         self.child = child
         self.leftbank = leftbank      # C, W, B
         self.rightbank = rightbank    # C, W, B
+        self.priority = priority
+    
+    def __lt__(self, other):
+        return (self.priority > other.priority)
 
 class Graph:
     def __init__(self, val, children, leftbank = [], rightbank = []):
@@ -22,7 +26,7 @@ class Graph:
             self.state.child.append(Node(node))
 
 # Reading Files for Start State
-sys.argv = [sys.argv[0], 'start1.txt']
+sys.argv = [sys.argv[0], 'start2.txt']
 start_file = open(sys.argv[1], "r")
 x = start_file.readline()
 leftstart = [int(i.strip()) for i in x.split(',')]
@@ -30,7 +34,7 @@ x = start_file.readline()
 rightstart = [int(i.strip()) for i in x.split(',')]
 
 # Reading Files for Goal State
-sys.argv = [sys.argv[0], 'goal1.txt']
+sys.argv = [sys.argv[0], 'goal2.txt']
 goal_file = open(sys.argv[1], "r")
 x = goal_file.readline()
 leftgoal = [int(i.strip()) for i in x.split(',')]
@@ -321,29 +325,37 @@ def iddfs_graph_search(state, goal):
             return result, numNodesExpanded
 
 def dls(state, goal, numNodesExpanded, depth, max_chick, max_wolf):
-    return recursive_dls(state, goal, numNodesExpanded, depth, max_chick, max_wolf)
+    visited = set()
+    return recursive_dls(state, goal, numNodesExpanded, depth, max_chick, max_wolf, visited)
 
-def recursive_dls(state, goal, numNodesExpanded, depth, max_chick, max_wolf):
+def recursive_dls(state, goal, numNodesExpanded, depth, max_chick, max_wolf, visited):
     if (state.leftbank == goal.leftbank and state.rightbank == goal.rightbank):
         return state, numNodesExpanded
     elif depth == 0:
         return "notFound"
     else:
         cutoff_occurred = False
-        temp = succ(state, max_chick, max_wolf)
-        numNodesExpanded += 1 
-        for successor in temp:
-            result = recursive_dls(successor, goal, numNodesExpanded, depth - 1, max_chick, max_wolf)
-            if result == "notFound":
-                cutoff_occurred = True
-            elif result:
-                # pdb.set_trace()
-                return result, numNodesExpanded
-        if cutoff_occurred:
-            return "notFound"
-        else:
-            return False
+        cur = state
+        if (str(cur.leftbank + cur.rightbank)) not in visited:              # Using hash set
+            visited.add(str(cur.leftbank + cur.rightbank))                # Adding to visited (modify to use unique key instead of depth or use hashset)
+            temp = succ(cur, max_chick, max_wolf)                # Expanding
+            numNodesExpanded += 1
+        
+            for successor in temp:
+                result = recursive_dls(successor, goal, numNodesExpanded, depth - 1, max_chick, max_wolf, visited)
+                if result == "notFound":
+                    cutoff_occurred = True
+                elif result:
+                    # pdb.set_trace()
+                    return result, numNodesExpanded
+            if cutoff_occurred:
+                return "notFound"
+            else:
+                return False
+        return "notFound"
+
             
+# https://www.reddit.com/r/learnpython/comments/5yxgd4/flatten_a_nested_list_using_recursion_simplify/
 def flatten(sequence: tuple) -> tuple:
     result = []
     stack = [sequence]
@@ -356,18 +368,52 @@ def flatten(sequence: tuple) -> tuple:
     result.reverse()
     return result   
 
+def heuristic(node):
+    if (node.rightbank[2] == 1):
+        return 0.25
 
+    else:
+        return 0.25
 
-# def a_star_search():
-    
+def a_star_search(state, goal):
+    max_chick = state.rightbank[0]
+    max_wolf = state.rightbank[1]
+    if (state.leftbank == goal.leftbank and state.rightbank == goal.rightbank):
+        return state
+    fringe = queue.PriorityQueue()
+    fringe.put(state)
+    visited = set()
+    numNodesExpanded = 0
+    while fringe:
+        cur = fringe.get()
+        try:
+            if (len(cur) == 2):
+                cur = cur[1]
+        except:
+            pass
+        if (cur.leftbank == goal.leftbank and cur.rightbank == goal.rightbank):
+            return cur, numNodesExpanded
+        new_states = succ(cur, max_chick, max_wolf)
+        numNodesExpanded += 1
+        if (str(cur.leftbank + cur.rightbank)) not in visited:              # Using hash set
+            visited.add(str(cur.leftbank + cur.rightbank))                # Adding to visited (modify to use unique key instead of depth or use hashset)
+            temp = succ(cur, max_chick, max_wolf)                # Expanding
+            numNodesExpanded += 1
+            for _node in new_states:
+                _node.priority = (_node.val + heuristic(_node))
+                fringe.put((_node.priority, _node))
+        
 
 
 inp = make_graph(leftstart, rightstart)
 exp_out = make_graph(rightstart, leftstart)
 
+x = a_star_search(inp.state,exp_out.state)
+
+
 x = iddfs_graph_search(inp.state,exp_out.state)
 print("Result:")
-xx = flatten(x)
+# xx = flatten(x)
 pdb.set_trace()
 # print(x.leftbank)
 # print(x.rightbank)
